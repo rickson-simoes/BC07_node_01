@@ -7,6 +7,12 @@ const appointmentsRouter = Router();
 // Comentei pois estou já instanciando dentro da classe AppointmentsRepository
 // const appointmentsRepository = new AppointmentsRepository();
 
+appointmentsRouter.get('/', (req, res) => {
+  const appointments = AppointmentsRepository.all();
+
+  return res.json(appointments);
+});
+
 appointmentsRouter.post('/', (req, res) => {
   const { provider, date } = req.body;
 
@@ -22,7 +28,10 @@ appointmentsRouter.post('/', (req, res) => {
       .json({ message: 'This appointment is already booked' });
   }
 
-  const appointment = AppointmentsRepository.create(provider, parsedDate);
+  const appointment = AppointmentsRepository.create({
+    provider,
+    date: parsedDate,
+  });
 
   return res.json(appointment);
 });
